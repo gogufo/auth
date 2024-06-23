@@ -1,0 +1,7 @@
+.DS_Store
+gufo
+gufo/var/config
+gufo/var/lib
+gufo/var/log
+gufo/var/files
+vendor/
