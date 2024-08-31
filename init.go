@@ -22,6 +22,7 @@ import (
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 
 	ad "auth/admin"
+	gt "auth/get"
 	pd "auth/post"
 	. "auth/version"
 )
@@ -41,7 +42,7 @@ func Init(t *pb.Request) (response *pb.Response) {
 		case "health":
 			response = health(t)
 		default:
-			response = ErrorReturn(t, 406, "000012", "Wrong request")
+			response = gt.Init(t)
 		}
 	}
 	if *t.Method == "POST" {
