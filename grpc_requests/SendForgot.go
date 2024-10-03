@@ -18,6 +18,8 @@
 package grpc_requests
 
 import (
+	"fmt"
+
 	. "github.com/gogufo/gufo-api-gateway/gufodao"
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 	"github.com/spf13/viper"
@@ -43,6 +45,7 @@ func SendForgot(t *pb.Request, email string, lang string, password string) {
 	argst := ToMapStringAny(args)
 	s.Args = argst
 
-	GRPCConnect(host, port, s)
+	resp := GRPCConnect(host, port, s)
+	SetErrorLog(fmt.Sprintf("%v", resp))
 
 }

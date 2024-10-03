@@ -18,6 +18,8 @@
 package grpc_requests
 
 import (
+	"fmt"
+
 	. "github.com/gogufo/gufo-api-gateway/gufodao"
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 	"github.com/spf13/viper"
@@ -45,6 +47,8 @@ func SendTimeHash(t *pb.Request, hash string, uid string, parametr string, email
 	argst := ToMapStringAny(args)
 	s.Args = argst
 
-	GRPCConnect(host, port, s)
+	resp := GRPCConnect(host, port, s)
+	SetErrorLog("SendTimeHash")
+	SetErrorLog(fmt.Sprintf("%v", resp))
 
 }

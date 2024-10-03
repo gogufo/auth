@@ -16,6 +16,8 @@
 package grpc_requests
 
 import (
+	"fmt"
+
 	. "github.com/gogufo/gufo-api-gateway/gufodao"
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 	"github.com/spf13/viper"
@@ -41,6 +43,8 @@ func SendOTP(t *pb.Request, email string, lang string, otp string) {
 	argst := ToMapStringAny(args)
 	s.Args = argst
 
-	GRPCConnect(host, port, s)
+	resp := GRPCConnect(host, port, s)
+	SetErrorLog("SendOTP")
+	SetErrorLog(fmt.Sprintf("%v", resp))
 
 }

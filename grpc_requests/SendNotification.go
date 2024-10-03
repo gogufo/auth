@@ -18,6 +18,8 @@
 package grpc_requests
 
 import (
+	"fmt"
+
 	. "github.com/gogufo/gufo-api-gateway/gufodao"
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 	"github.com/spf13/viper"
@@ -44,6 +46,8 @@ func SendNotification(t *pb.Request, title string, message []string, template st
 	argst := ToMapStringAny(args)
 	s.Args = argst
 
-	GRPCConnect(host, port, s)
+	resp := GRPCConnect(host, port, s)
+	SetErrorLog("SendNotification")
+	SetErrorLog(fmt.Sprintf("%v", resp))
 
 }

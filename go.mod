@@ -3,23 +3,20 @@ module auth
 go 1.21.6
 
 require (
-	github.com/BurntSushi/toml v1.3.2
 	github.com/certifi/gocertifi v0.0.0-20210507211836-431795d63e8d
 	github.com/getsentry/sentry-go v0.27.0
-	github.com/gogufo/gufo-api-gateway v1.14.2
-	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/gogufo/gufo-api-gateway v1.17.0
 	github.com/microcosm-cc/bluemonday v1.0.26
-	github.com/nicksnyder/go-i18n/v2 v2.3.0
 	github.com/spf13/viper v1.18.2
 	golang.org/x/crypto v0.22.0
 	golang.org/x/net v0.24.0
-	golang.org/x/text v0.14.0
 	google.golang.org/grpc v1.63.2
 	gorm.io/gorm v1.25.5
 )
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -45,6 +42,7 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/sys v0.19.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240227224415-6ceb2ff114de // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect

@@ -16,13 +16,22 @@
 package grpc_requests
 
 import (
+	"encoding/json"
 	"fmt"
-	"strconv"
 
 	. "github.com/gogufo/gufo-api-gateway/gufodao"
 	pb "github.com/gogufo/gufo-api-gateway/proto/go"
 	"github.com/spf13/viper"
 )
+
+type HashResp struct {
+	UID      string `json:"uid"`
+	Mail     string `json:"email"`
+	Hash     string `json:"hash"`
+	Param    string `json:"parametr"`
+	Created  int    `json:"created"`
+	Lifetime int    `json:"lifetime"`
+}
 
 func CheckTimeHash(t *pb.Request, hash string, email string) (lifetime int, uid string, error string) {
 
@@ -43,10 +52,27 @@ func CheckTimeHash(t *pb.Request, hash string, email string) (lifetime int, uid 
 	argst := ToMapStringAny(args)
 	s.Args = argst
 
-	ans := GRPCConnect(host, port, s)
-	error = fmt.Sprintf("%v", ans["error"])
-	uid = fmt.Sprintf("%v", ans["uid"])
-	lifetime, _ = strconv.Atoi(fmt.Sprintf("%v", ans["lifetime"]))
-	return lifetime, uid, error
+	resp := GRPCConnect(host, port, s)
+	SetErrorLog("CheckTimeHash")
+	SetErrorLog(fmt.Sprintf("%v", resp))
+
+	data := HashResp{}
+	errstring := ""
+
+	byte, err := json.Marshal(resp["hash"])
+	if err != nil {
+		SetErrorLog(err.Error())
+		errstring = err.Error()
+		return 0, "", errstring
+	}
+
+	err = json.Unmarshal(byte, &data)
+	if err != nil {
+		SetErrorLog(err.Error())
+		errstring = err.Error()
+		return 0, "", errstring
+	}
+
+	return data.Lifetime, data.UID, errstring
 
 }

@@ -98,11 +98,13 @@ func Signin(t *pb.Request) (response *pb.Response) {
 
 		// Check for OTP livetime
 		ctime := int(time.Now().Unix())
+		SetErrorLog(fmt.Sprintf("ctime: %v", ctime))
+		SetErrorLog(fmt.Sprintf("lifetime: %v", lifetime))
 
 		if ctime > lifetime {
 			//Delete OTP
 			go DeleteTimeHash(t, tfa, uname)
-			return ErrorReturn(t, 400, "000022", "You already asked for confirmation email")
+			return ErrorReturn(t, 400, "000022", "OTP has expired")
 		}
 
 		//If right - return token
@@ -145,7 +147,8 @@ func Signin(t *pb.Request) (response *pb.Response) {
 
 		//	*t.IsAdmin = int32(0)
 		if userExist.IsAdmin {
-			*t.IsAdmin = int32(1)
+			adm := int32(1)
+			t.IsAdmin = &adm
 		}
 
 		//6. Write data to users table
@@ -155,9 +158,10 @@ func Signin(t *pb.Request) (response *pb.Response) {
 		//8. TODO Write data to signin history table
 
 		//return data
-
-		*t.UID = userExist.UID
-		*t.SessionEnd = int32(at_lifetime)
+		userid := userExist.UID
+		sesionend := int32(at_lifetime)
+		t.UID = &userid
+		t.SessionEnd = &sesionend
 
 		ans["access_token"] = access_token
 		ans["refresh_token"] = refresh_token
@@ -211,7 +215,12 @@ func Signin(t *pb.Request) (response *pb.Response) {
 		//1. Generate OTP and send email. Retrun user information about 2FA required
 
 		otp := Numgen(6)
-		go SendOTP(t, userExist.Mail, *t.Language, otp)
+		lang := "eng"
+		if t.Language != nil {
+			lang = *t.Language
+		}
+		go SendOTP(t, userExist.Mail, lang, otp)
+		go SendTimeHash(t, otp, userExist.Name, "tfa", userExist.Mail, 300)
 
 		askedemail := maskemail(userExist.Mail)
 
