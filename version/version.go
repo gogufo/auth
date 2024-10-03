@@ -17,4 +17,4 @@
 
 package version
 
-const VERSIONPLUGIN = "2.0.0"
+const VERSIONPLUGIN = "1.2.0"
